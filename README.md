@@ -1,7 +1,7 @@
-# JalDrishti AI 💧
+# GhatShield AI 💧
 ### Water Quality Intelligence & Decision Support for Bhopal
 
-JalDrishti AI is an AI-powered water-quality intelligence and decision-support prototype designed for municipal teams working with water-quality observations from Bhopal's ghats. It brings monitoring insights, historical trends, data-quality checks, sampling prioritisation, and evidence-oriented reporting into one dashboard.
+GhatShield AI is an AI-powered water-quality intelligence and decision-support prototype designed for municipal teams working with water-quality observations from Bhopal's ghats. It brings monitoring insights, historical trends, data-quality checks, sampling prioritisation, and evidence-oriented reporting into one dashboard.
 
 > **Project status:** Prototype / under active development. Outputs should support human review and must not be treated as official regulatory determinations or a substitute for laboratory testing.
 
@@ -11,7 +11,7 @@ Water-quality teams need to review observations from multiple locations, underst
 
 ## 💡 Proposed Solution
 
-JalDrishti AI provides a unified console to explore ghat-level intelligence and turn water-quality records into understandable, traceable decision support for municipal users.
+GhatShield AI provides a unified console to explore ghat-level intelligence and turn water-quality records into understandable, traceable decision support for municipal users.
 
 ## ✨ Key Capabilities
 
@@ -39,7 +39,7 @@ Actual outputs depend on the available data, configuration, and implementation. 
 ## 📁 Project Structure
 
 ```text
-JalDrishti-AI/
+GhatShield-AI/
 ├── src/
 │   ├── components/
 │   │   ├── common/
@@ -65,8 +65,8 @@ JalDrishti-AI/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/Ayush-Tech-45/JalDrishti-AI.git
-cd JalDrishti-AI
+git clone https://github.com/Ayush-Tech-45/GhatShield-AI.git
+cd GhatShield-AI
 ```
 
 ### 2. Install dependencies
@@ -127,7 +127,7 @@ npm run lint
 
 ## 👥 Team
 
-Built collaboratively by the JalDrishti AI project team.
+Built collaboratively by the GhatShield AI project team.
 
 | Name | Role |
 |---|---|
@@ -144,14 +144,14 @@ We welcome contributions from the project team.
 1. Clone the repository and create a branch for your task.
 2. Make focused changes and test them locally.
 3. Commit with a descriptive message.
-4. Push your branch and open a Pull Request to `main).
+4. Push your branch and open a Pull Request to `main`.
 5. Ask a teammate to review the changes before merging.
 
 Suggested branch names: `feat/ghat-dashboard`, `fix/data-validation`, or `docs/readme-update`.
 
 ## 📌 Current Status
 
-This repository contains the JalDrishti AI dashboard prototype. Data integrations, AI workflows, validation logic, and deployment details may evolve as development continues.
+This repository contains the GhatShield AI dashboard prototype. Data integrations, AI workflows, validation logic, and deployment details may evolve as development continues.
 
 ## 📄 License
 
