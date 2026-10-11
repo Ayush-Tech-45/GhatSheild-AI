@@ -1,0 +1,6 @@
+{
+  "name": "GhatShield AI — Bhopal Water Resource Intelligence",
+  "description": "Statutory environmental intelligence, CPCB Class B compliance audit, and water quality decision console for Bhopal Municipal Corporation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
