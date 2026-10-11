@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface NotificationsDrawerProps {
   isOpen: boolean;
@@ -16,6 +16,17 @@ export const NotificationsDrawer: React.FC<NotificationsDrawerProps> = ({
   onClose,
   onSelectGhat
 }) => {
+  // Escape key listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const alerts = [
@@ -61,33 +72,47 @@ export const NotificationsDrawer: React.FC<NotificationsDrawerProps> = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-slate-900/40 backdrop-blur-xs">
-      <div className="w-full max-w-md h-full bg-surface-container-lowest border-l border-outline-variant shadow-2xl flex flex-col">
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-50 flex justify-end bg-slate-900/50 backdrop-blur-xs"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="notifications-drawer-title"
+    >
+      <div className="w-full sm:max-w-md h-full bg-surface-container-lowest border-l border-outline-variant shadow-2xl flex flex-col animate-fade-in">
         {/* Header */}
-        <div className="p-4 border-b border-outline-variant flex items-center justify-between bg-surface-container-low">
-          <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary text-xl">notifications</span>
-            <div>
-              <h3 className="text-sm font-bold text-on-surface">Municipal Alerts & Dispatches</h3>
-              <p className="text-[11px] text-on-surface-variant">Active Environmental Exceedances & Telemetry Voids</p>
+        <div className="p-4 border-b border-outline-variant flex items-center justify-between bg-surface-container-low shrink-0">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="material-symbols-outlined text-primary text-2xl shrink-0">notifications</span>
+            <div className="min-w-0">
+              <h3 id="notifications-drawer-title" className="text-sm font-bold text-on-surface truncate">
+                Municipal Alerts & Dispatches
+              </h3>
+              <p className="text-[11px] text-on-surface-variant truncate">
+                Active Environmental Exceedances & Telemetry Voids
+              </p>
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container transition-colors"
+            aria-label="Close alerts drawer"
+            className="w-11 h-11 flex items-center justify-center rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors shrink-0 focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <span className="material-symbols-outlined text-lg">close</span>
+            <span className="material-symbols-outlined text-xl">close</span>
           </button>
         </div>
 
         {/* List */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3 text-xs">
+        <div className="flex-1 overflow-y-auto p-4 space-y-3 text-xs scrollbar-thin">
           {alerts.map((alt) => (
             <div
               key={alt.id}
               className="p-3 rounded-lg border border-outline-variant bg-surface-bright space-y-2 hover:bg-surface-container-low transition-colors"
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2">
                 <span
                   className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
                     alt.type === 'breach'
@@ -113,11 +138,12 @@ export const NotificationsDrawer: React.FC<NotificationsDrawerProps> = ({
               {alt.ghatId && (
                 <div className="pt-2 border-t border-outline-variant/50 flex justify-end">
                   <button
+                    type="button"
                     onClick={() => {
                       onSelectGhat(alt.ghatId!);
                       onClose();
                     }}
-                    className="text-[11px] font-semibold text-primary hover:underline flex items-center gap-1"
+                    className="min-h-[36px] px-2 text-[11px] font-semibold text-primary hover:underline flex items-center gap-1"
                   >
                     <span>Inspect Station</span>
                     <span className="material-symbols-outlined text-xs">arrow_forward</span>
@@ -129,11 +155,12 @@ export const NotificationsDrawer: React.FC<NotificationsDrawerProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-3 bg-surface-container-low border-t border-outline-variant text-[11px] text-outline flex items-center justify-between">
-          <span>Synced with BMC Command Centre (ICCC)</span>
+        <div className="p-3 sm:p-4 bg-surface-container-low border-t border-outline-variant text-[11px] text-outline flex items-center justify-between shrink-0">
+          <span className="truncate mr-2">Synced with BMC Command Centre (ICCC)</span>
           <button
+            type="button"
             onClick={onClose}
-            className="px-2.5 py-1 rounded border border-outline-variant bg-surface text-on-surface text-xs hover:bg-surface-container"
+            className="min-h-[36px] px-3 py-1.5 rounded-lg border border-outline-variant bg-surface text-on-surface text-xs font-semibold hover:bg-surface-container shrink-0"
           >
             Dismiss All
           </button>

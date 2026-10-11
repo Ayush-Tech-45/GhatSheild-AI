@@ -35,7 +35,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onOpenDiagnostics })
   const weightSum = weights.w1Bod + weights.w2Do + weights.w3DataGap + weights.w4Volatility;
 
   return (
-    <main className="flex-1 overflow-y-auto px-8 py-6 space-y-6 bg-background">
+    <main className="flex-1 overflow-y-auto p-3 sm:p-5 md:p-6 space-y-4 sm:space-y-6 bg-background min-w-0">
       {/* Toast Alert */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-2.5 rounded-lg shadow-xl text-xs flex items-center gap-2 border border-slate-700 animate-fade-in">
@@ -45,9 +45,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onOpenDiagnostics })
       )}
 
       {/* Header Section */}
-      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 pb-4 border-b border-outline-variant">
-        <div className="space-y-1.5 max-w-3xl">
-          <div className="flex items-center gap-2.5">
+      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3 sm:gap-4 pb-4 border-b border-outline-variant min-w-0">
+        <div className="space-y-1.5 max-w-3xl min-w-0">
+          <div className="flex items-center gap-2.5 flex-wrap">
             <h1 className="text-xl font-bold text-on-surface tracking-tight">
               Settings & Regulatory Methodology Transparency
             </h1>
@@ -64,33 +64,33 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onOpenDiagnostics })
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+        <div className="flex flex-wrap items-center gap-2 shrink-0 self-start lg:self-auto">
           <button
             onClick={handleResetDefaults}
-            className="h-9 px-3 rounded bg-surface-container-lowest text-on-surface border border-outline-variant hover:bg-surface-container-low transition-colors text-xs font-medium flex items-center gap-1.5"
+            className="min-h-[40px] px-3 rounded bg-surface-container-lowest text-on-surface border border-outline-variant hover:bg-surface-container-low transition-colors text-xs font-medium flex items-center gap-1.5"
           >
             <span className="material-symbols-outlined text-sm">restart_alt</span>
             Reset to CPCB Statutory Defaults
           </button>
           <button
             onClick={() => showToast('Methodology Whitepaper (PDF) downloaded.')}
-            className="h-9 px-3 rounded bg-surface-container-lowest text-primary border border-primary/30 hover:bg-surface-container-low transition-colors text-xs font-semibold flex items-center gap-1.5"
+            className="min-h-[40px] px-3 rounded bg-surface-container-lowest text-primary border border-primary/30 hover:bg-surface-container-low transition-colors text-xs font-semibold flex items-center gap-1.5"
           >
             <span className="material-symbols-outlined text-sm">picture_as_pdf</span>
-            Export Methodology Whitepaper (PDF)
+            Export Whitepaper (PDF)
           </button>
           <button
             onClick={handleSaveConfig}
-            className="h-9 px-4 rounded bg-primary text-on-primary border border-primary-container shadow-xs hover:bg-tertiary transition-all text-xs font-bold flex items-center gap-1.5"
+            className="min-h-[40px] px-4 rounded bg-primary text-on-primary border border-primary-container shadow-xs hover:bg-tertiary transition-all text-xs font-bold flex items-center gap-1.5"
           >
             <span className="material-symbols-outlined text-sm">save</span>
-            Save & Version Audit Config
+            Save Config
           </button>
         </div>
       </div>
 
       {/* Sub-navigation Category Tabs */}
-      <div className="flex items-center border-b border-outline-variant gap-6 overflow-x-auto text-xs">
+      <div className="flex items-center border-b border-outline-variant gap-4 sm:gap-6 overflow-x-auto text-xs min-w-0 flex-nowrap pb-1 scrollbar-thin">
         <button
           onClick={() => setActiveTab(1)}
           className={`pb-3 flex items-center gap-2 whitespace-nowrap transition-colors font-semibold ${

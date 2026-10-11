@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface SystemDiagnosticsModalProps {
   isOpen: boolean;
@@ -13,6 +13,17 @@ interface SystemDiagnosticsModalProps {
 export const SystemDiagnosticsModal: React.FC<SystemDiagnosticsModalProps> = ({ isOpen, onClose }) => {
   const [isRunningSelfTest, setIsRunningSelfTest] = useState(false);
   const [testSuccess, setTestSuccess] = useState(false);
+
+  // Escape key handler
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -26,30 +37,44 @@ export const SystemDiagnosticsModal: React.FC<SystemDiagnosticsModalProps> = ({ 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4">
-      <div className="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-xl w-full max-w-xl overflow-hidden flex flex-col">
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-3 sm:p-4 overflow-y-auto"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="diagnostics-modal-title"
+    >
+      <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-2xl w-full max-w-xl max-h-[92vh] overflow-hidden flex flex-col animate-fade-in my-auto">
         {/* Header */}
-        <div className="p-4 border-b border-outline-variant flex items-center justify-between bg-surface-container-low">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-surface-container-high text-primary flex items-center justify-center">
-              <span className="material-symbols-outlined text-lg">format_image_left</span>
+        <div className="p-4 border-b border-outline-variant flex items-center justify-between bg-surface-container-low shrink-0">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-9 h-9 rounded-lg bg-surface-container-high text-primary flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-xl">format_image_left</span>
             </div>
-            <div>
-              <h3 className="text-sm font-bold text-on-surface">System Diagnostics & Environmental Engine Health</h3>
-              <p className="text-[11px] text-on-surface-variant">Deterministic Invariant Verification & Telemetry Linkages</p>
+            <div className="min-w-0">
+              <h3 id="diagnostics-modal-title" className="text-sm font-bold text-on-surface truncate">
+                System Diagnostics & Environmental Engine Health
+              </h3>
+              <p className="text-[11px] text-on-surface-variant truncate">
+                Deterministic Invariant Verification & Telemetry Linkages
+              </p>
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container transition-colors"
+            aria-label="Close diagnostics dialog"
+            className="w-11 h-11 flex items-center justify-center rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors shrink-0 focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <span className="material-symbols-outlined text-lg">close</span>
+            <span className="material-symbols-outlined text-xl">close</span>
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-5 space-y-4 text-xs">
-          <div className="grid grid-cols-2 gap-3">
+        <div className="p-4 sm:p-5 space-y-4 text-xs overflow-y-auto flex-1 scrollbar-thin">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             <div className="p-3 rounded-lg bg-surface-container-low border border-outline-variant">
               <span className="text-outline text-[10px] uppercase font-bold block">Archival Database</span>
               <div className="flex items-center justify-between mt-1">
@@ -101,19 +126,19 @@ export const SystemDiagnosticsModal: React.FC<SystemDiagnosticsModalProps> = ({ 
               Statutory System Invariants
             </span>
             <div className="space-y-1.5 font-mono text-[11px]">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
                 <span>[INV-01] Zero-Substitution Prohibition:</span>
-                <span className="text-emerald-700 font-bold">ENFORCED (No 0.0 mg/L auto-fill)</span>
+                <span className="text-emerald-700 font-bold">ENFORCED (No 0.0 auto-fill)</span>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
                 <span>[INV-02] BDL Categorical Preservation:</span>
-                <span className="text-emerald-700 font-bold">ENFORCED (&lt;2.0 mg/L boundary)</span>
+                <span className="text-emerald-700 font-bold">ENFORCED (&lt;2.0 boundary)</span>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
                 <span>[INV-03] Cold Chain Transit Ceiling:</span>
                 <span className="text-emerald-700 font-bold">ACTIVE (4.0 hrs limit)</span>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
                 <span>[INV-04] CPCB Class B Bathing Limit:</span>
                 <span className="text-emerald-700 font-bold">LOCKED (BOD ≤ 3.0 mg/L)</span>
               </div>
@@ -122,16 +147,16 @@ export const SystemDiagnosticsModal: React.FC<SystemDiagnosticsModalProps> = ({ 
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-surface-container-low border-t border-outline-variant flex items-center justify-between">
-          <div className="text-[10px] font-mono text-outline">
+        <div className="p-3.5 sm:p-4 bg-surface-container-low border-t border-outline-variant flex flex-col sm:flex-row items-center justify-between gap-2.5 shrink-0">
+          <div className="text-[10px] font-mono text-outline self-start sm:self-auto">
             Build: v2.4.1-ENV-MPPCB
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
             <button
               type="button"
               onClick={handleRunSelfTest}
               disabled={isRunningSelfTest}
-              className="px-3 py-1.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-colors text-xs font-semibold flex items-center gap-1.5"
+              className="min-h-[40px] px-3.5 py-1.5 rounded-lg bg-primary text-on-primary hover:bg-tertiary transition-colors text-xs font-semibold flex items-center gap-1.5"
             >
               {isRunningSelfTest ? (
                 <>
@@ -153,7 +178,7 @@ export const SystemDiagnosticsModal: React.FC<SystemDiagnosticsModalProps> = ({ 
             <button
               type="button"
               onClick={onClose}
-              className="px-3 py-1.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors text-xs font-medium"
+              className="min-h-[40px] px-3.5 py-1.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors text-xs font-medium"
             >
               Close
             </button>

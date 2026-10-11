@@ -11,7 +11,37 @@ export type ScreenId =
   | 'sampling-optimiser'
   | 'ai-copilot'
   | 'reports-evidence'
-  | 'settings';
+  | 'settings'
+  | 'admin-dashboard';
+
+export type UserRole = 'admin' | 'officer' | 'analyst';
+
+export interface UserAccount {
+  id: string;
+  name: string;
+  email: string;
+  password?: string;
+  role: UserRole;
+  department: string;
+  designation: string;
+  badgeNumber: string;
+  status: 'active' | 'pending' | 'suspended';
+  createdAt: string;
+  lastLogin: string;
+  avatarInitials: string;
+}
+
+export interface SecurityAuditLog {
+  id: string;
+  timestamp: string;
+  userEmail: string;
+  userName: string;
+  action: string;
+  category: 'auth' | 'rbac' | 'threshold' | 'dossier' | 'security';
+  ipAddress: string;
+  status: 'success' | 'warning' | 'denied';
+  details: string;
+}
 
 export type PriorityLevel = 'High Priority' | 'Moderate Priority' | 'Lower Priority' | 'Insufficient Evidence';
 

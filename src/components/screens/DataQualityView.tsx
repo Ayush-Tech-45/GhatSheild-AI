@@ -42,7 +42,7 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({
   });
 
   return (
-    <main className="flex-1 overflow-y-auto p-6 space-y-6">
+    <main className="flex-1 overflow-y-auto p-3 sm:p-5 md:p-6 space-y-4 sm:space-y-6 min-w-0">
       {/* Toast Alert */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-2.5 rounded-lg shadow-xl text-xs flex items-center gap-2 border border-slate-700 animate-fade-in">
@@ -52,13 +52,13 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({
       )}
 
       {/* Prominent Top Notice Banner */}
-      <section className="bg-surface-container-high border-l-4 border-primary rounded-xl p-4 flex items-start justify-between shadow-xs">
-        <div className="flex items-start gap-3">
-          <div className="p-1 bg-primary text-on-primary rounded-lg mt-0.5">
+      <section className="bg-surface-container-high border-l-4 border-primary rounded-xl p-3.5 sm:p-4 flex flex-col sm:flex-row items-start justify-between gap-3 shadow-xs min-w-0">
+        <div className="flex items-start gap-3 min-w-0">
+          <div className="p-1 bg-primary text-on-primary rounded-lg mt-0.5 shrink-0">
             <span className="material-symbols-outlined text-base">shield</span>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
                 Regulatory Baseline Notice
               </span>
@@ -70,7 +70,7 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2 shrink-0 ml-4">
+        <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
           <span className="text-[11px] bg-surface-container-lowest px-2.5 py-1 rounded border border-outline-variant text-on-surface-variant font-medium">
             ISO 14044 Data Lineage
           </span>
@@ -78,7 +78,7 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({
       </section>
 
       {/* Header Section */}
-      <section className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-outline-variant">
+      <section className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 pb-2 border-b border-outline-variant min-w-0">
         <div>
           <div className="flex items-center gap-2.5 flex-wrap">
             <h2 className="text-xl font-bold text-on-surface tracking-tight">
@@ -94,17 +94,17 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex flex-wrap items-center gap-2 shrink-0 self-start md:self-auto">
           <button
             onClick={() => onOpenExportModal('all')}
-            className="inline-flex items-center gap-2 px-3 py-2 bg-surface-container-lowest border border-outline-variant hover:border-outline text-on-surface rounded-xl text-xs font-semibold shadow-xs transition-colors"
+            className="min-h-[40px] inline-flex items-center gap-2 px-3 py-2 bg-surface-container-lowest border border-outline-variant hover:border-outline text-on-surface rounded-xl text-xs font-semibold shadow-xs transition-colors"
           >
             <span className="material-symbols-outlined text-outline text-sm">download</span>
             <span>Export Integrity Audit (CSV)</span>
           </button>
           <button
             onClick={() => onOpenExportModal('all')}
-            className="inline-flex items-center gap-2 px-3 py-2 bg-primary hover:bg-tertiary text-on-primary rounded-xl text-xs font-semibold shadow-xs transition-colors"
+            className="min-h-[40px] inline-flex items-center gap-2 px-3 py-2 bg-primary hover:bg-tertiary text-on-primary rounded-xl text-xs font-semibold shadow-xs transition-colors"
           >
             <span className="material-symbols-outlined text-sm">picture_as_pdf</span>
             <span>Download Provenance Dossier (PDF)</span>
@@ -217,55 +217,56 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({
       </section>
 
       {/* Tabs / Subview Switcher */}
-      <section className="border-b border-outline-variant flex items-center justify-between">
-        <div className="flex items-center gap-6 text-xs">
+      {/* Tab Switcher & Granularity Controller */}
+      <section className="border-b border-outline-variant flex flex-col md:flex-row md:items-center justify-between gap-3 min-w-0">
+        <div className="flex items-center gap-4 sm:gap-6 text-xs overflow-x-auto min-w-0 w-full md:w-auto pb-1 md:pb-0 flex-nowrap scrollbar-thin">
           <button
             onClick={() => setActiveTab('matrix')}
-            className={`pb-3 font-semibold flex items-center gap-2 transition-colors ${
+            className={`pb-3 font-semibold flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 min-h-[40px] ${
               activeTab === 'matrix'
                 ? 'text-primary border-b-2 border-primary'
                 : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
             <span className="material-symbols-outlined text-base">grid_view</span>
-            <span>Missing-Value & Parameter Availability Matrix</span>
+            <span>Parameter Availability Matrix</span>
           </button>
           <button
             onClick={() => setActiveTab('ledger')}
-            className={`pb-3 font-semibold flex items-center gap-2 transition-colors ${
+            className={`pb-3 font-semibold flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 min-h-[40px] ${
               activeTab === 'ledger'
                 ? 'text-primary border-b-2 border-primary'
                 : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
             <span className="material-symbols-outlined text-base">table_chart</span>
-            <span>Raw-to-Normalised Evidence Ledger</span>
+            <span>Raw-to-Normalised Ledger</span>
             <span className="px-1.5 py-0.5 rounded-full bg-surface-container text-outline text-[10px]">
               {RAW_OBSERVATION_RECORDS.length}
             </span>
           </button>
           <button
             onClick={() => setActiveTab('reconciliation')}
-            className={`pb-3 font-semibold flex items-center gap-2 transition-colors ${
+            className={`pb-3 font-semibold flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 min-h-[40px] ${
               activeTab === 'reconciliation'
                 ? 'text-primary border-b-2 border-primary'
                 : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
             <span className="material-symbols-outlined text-base">hub</span>
-            <span>Entity Reconciliation & Gazette Alias Log</span>
+            <span>Gazette Alias Log</span>
             <span className="px-1.5 py-0.5 rounded-full bg-error-container text-on-error-container text-[10px] font-bold">
               1
             </span>
           </button>
         </div>
 
-        <div className="flex items-center gap-2 pb-2 text-xs">
+        <div className="flex items-center gap-2 pb-2 text-xs shrink-0 self-start md:self-auto">
           <span className="text-outline">Matrix Granularity:</span>
           <div className="inline-flex rounded-lg border border-outline-variant bg-surface-container-lowest p-0.5 text-xs">
             <button
               onClick={() => setGranularity('annual')}
-              className={`px-2.5 py-1 rounded transition-colors ${
+              className={`px-2.5 py-1 rounded transition-colors min-h-[32px] ${
                 granularity === 'annual' ? 'bg-primary text-on-primary font-semibold' : 'text-on-surface-variant'
               }`}
             >
@@ -273,7 +274,7 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({
             </button>
             <button
               onClick={() => setGranularity('monthly')}
-              className={`px-2.5 py-1 rounded transition-colors ${
+              className={`px-2.5 py-1 rounded transition-colors min-h-[32px] ${
                 granularity === 'monthly' ? 'bg-primary text-on-primary font-semibold' : 'text-on-surface-variant'
               }`}
             >
@@ -328,8 +329,8 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({
             </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs">
+          <div className="w-full overflow-x-auto min-w-0 scrollbar-thin">
+            <table className="w-full text-left border-collapse text-xs min-w-[700px]">
               <thead>
                 <tr className="bg-surface-container text-on-surface-variant text-[11px] uppercase border-b border-outline-variant font-semibold">
                   <th className="py-2.5 px-4 sticky left-0 bg-surface-container z-10 w-64 border-r border-outline-variant">
@@ -526,8 +527,8 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({
             </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs">
+          <div className="w-full overflow-x-auto min-w-0 scrollbar-thin">
+            <table className="w-full text-left border-collapse text-xs min-w-[720px]">
               <thead>
                 <tr className="bg-surface-container text-on-surface-variant text-[11px] uppercase border-b border-outline-variant font-semibold">
                   <th className="py-2.5 px-4 w-44">Record ID & Date</th>

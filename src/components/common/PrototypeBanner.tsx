@@ -13,18 +13,21 @@ export const PrototypeBanner: React.FC<PrototypeBannerProps> = ({ version = 'v2.
   return (
     <aside
       aria-label="Regulatory Notice"
-      className="w-full bg-amber-500/10 border-b border-amber-600/20 px-4 py-1.5 flex items-center justify-between text-on-surface z-50 sticky top-0 backdrop-blur-sm shrink-0"
+      className="w-full bg-amber-500/10 border-b border-amber-600/20 px-3 sm:px-4 py-1.5 flex flex-wrap items-center justify-between text-on-surface z-40 shrink-0 gap-1.5"
     >
-      <div className="flex items-center gap-2 max-w-7xl mx-auto w-full">
-        <span className="material-symbols-outlined text-amber-700 text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>
+      <div className="flex items-center gap-2 min-w-0 flex-1">
+        <span
+          className="material-symbols-outlined text-amber-700 text-sm shrink-0"
+          style={{ fontVariationSettings: "'FILL' 1" }}
+        >
           warning
         </span>
-        <p className="text-[11px] font-semibold tracking-wide text-on-surface uppercase truncate md:whitespace-normal">
+        <p className="text-[10px] sm:text-[11px] font-semibold tracking-wide text-on-surface uppercase leading-tight line-clamp-2 sm:line-clamp-none">
           <span className="font-bold text-amber-800">HISTORICAL PROTOTYPE (2023–2025) — NOT LIVE TELEMETRY:</span>{' '}
-          System methodology, deterministic rule engine parameters, statutory standards (CPCB Class B), and GIS gazette entity reconciliation settings for Bhopal Municipal Corporation.
+          CPCB Class B Bathing Protocol & GIS gazette reconciliation for Bhopal Municipal Corporation.
         </p>
       </div>
-      <span className="text-[11px] text-on-surface-variant font-mono bg-surface-container px-2 py-0.5 rounded border border-outline-variant shrink-0 ml-3">
+      <span className="text-[10px] sm:text-[11px] text-on-surface-variant font-mono bg-surface-container px-2 py-0.5 rounded border border-outline-variant shrink-0 ml-auto sm:ml-2">
         BUILD: {version}
       </span>
     </aside>

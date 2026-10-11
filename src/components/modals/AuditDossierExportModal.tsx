@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GHAT_STATIONS } from '../../data/mockData.ts';
 
 interface AuditDossierExportModalProps {
@@ -15,14 +15,31 @@ interface AuditDossierExportModalProps {
 export const AuditDossierExportModal: React.FC<AuditDossierExportModalProps> = ({
   isOpen,
   onClose,
-  selectedGhatId
+  selectedGhatId = 'all'
 }) => {
   const [format, setFormat] = useState<'pdf' | 'csv' | 'bundle'>('pdf');
   const [includeRawLogs, setIncludeRawLogs] = useState(true);
   const [includeDigitalSignature, setIncludeDigitalSignature] = useState(true);
-  const [selectedStation, setSelectedStation] = useState(selectedGhatId || 'all');
+  const [selectedStation, setSelectedStation] = useState<string>(selectedGhatId);
   const [isExporting, setIsExporting] = useState(false);
   const [exportComplete, setExportComplete] = useState(false);
+
+  useEffect(() => {
+    if (selectedGhatId) {
+      setSelectedStation(selectedGhatId);
+    }
+  }, [selectedGhatId]);
+
+  // Escape key handler
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -39,36 +56,50 @@ export const AuditDossierExportModal: React.FC<AuditDossierExportModalProps> = (
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4">
-      <div className="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-xl w-full max-w-lg overflow-hidden flex flex-col">
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-3 sm:p-4 overflow-y-auto"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="export-modal-title"
+    >
+      <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-2xl w-full max-w-lg max-h-[92vh] overflow-hidden flex flex-col animate-fade-in my-auto">
         {/* Header */}
-        <div className="p-4 border-b border-outline-variant flex items-center justify-between bg-surface-container-low">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-primary text-on-primary flex items-center justify-center font-bold">
-              <span className="material-symbols-outlined text-lg">download</span>
+        <div className="p-4 border-b border-outline-variant flex items-center justify-between bg-surface-container-low shrink-0">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-9 h-9 rounded-lg bg-primary text-on-primary flex items-center justify-center font-bold shrink-0">
+              <span className="material-symbols-outlined text-xl">download</span>
             </div>
-            <div>
-              <h3 className="text-sm font-bold text-on-surface">Export Statutory Audit Dossier</h3>
-              <p className="text-[11px] text-on-surface-variant">CPCB Class B Standard & MPPCB Certified Lineage</p>
+            <div className="min-w-0">
+              <h3 id="export-modal-title" className="text-sm font-bold text-on-surface truncate">
+                Export Statutory Audit Dossier
+              </h3>
+              <p className="text-[11px] text-on-surface-variant truncate">
+                CPCB Class B Standard & MPPCB Certified Lineage
+              </p>
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container transition-colors"
+            aria-label="Close export dialog"
+            className="w-11 h-11 flex items-center justify-center rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors shrink-0 focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <span className="material-symbols-outlined text-lg">close</span>
+            <span className="material-symbols-outlined text-xl">close</span>
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-5 space-y-4 text-xs">
+        <div className="p-4 sm:p-5 space-y-4 text-xs overflow-y-auto flex-1 scrollbar-thin">
           {/* Target Station */}
           <div>
             <label className="font-semibold text-on-surface block mb-1">Target Monitoring Scope</label>
             <select
               value={selectedStation}
               onChange={(e) => setSelectedStation(e.target.value)}
-              className="w-full h-8 px-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-xs text-on-surface focus:outline-none focus:border-primary"
+              className="w-full h-9 px-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-xs text-on-surface focus:outline-none focus:border-primary"
             >
               <option value="all">All 14 Bhopal Visarjan Ghats (Comprehensive Catchment)</option>
               {GHAT_STATIONS.map((g) => (
@@ -82,11 +113,11 @@ export const AuditDossierExportModal: React.FC<AuditDossierExportModalProps> = (
           {/* Export Format */}
           <div>
             <label className="font-semibold text-on-surface block mb-1">Export Package Format</label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <button
                 type="button"
                 onClick={() => setFormat('pdf')}
-                className={`p-2.5 rounded-lg border text-left transition-all ${
+                className={`min-h-[44px] p-2.5 rounded-lg border text-left transition-all ${
                   format === 'pdf'
                     ? 'border-primary bg-primary/5 text-primary font-semibold ring-1 ring-primary'
                     : 'border-outline-variant bg-surface hover:bg-surface-container-low text-on-surface'
@@ -102,7 +133,7 @@ export const AuditDossierExportModal: React.FC<AuditDossierExportModalProps> = (
               <button
                 type="button"
                 onClick={() => setFormat('csv')}
-                className={`p-2.5 rounded-lg border text-left transition-all ${
+                className={`min-h-[44px] p-2.5 rounded-lg border text-left transition-all ${
                   format === 'csv'
                     ? 'border-primary bg-primary/5 text-primary font-semibold ring-1 ring-primary'
                     : 'border-outline-variant bg-surface hover:bg-surface-container-low text-on-surface'
@@ -118,7 +149,7 @@ export const AuditDossierExportModal: React.FC<AuditDossierExportModalProps> = (
               <button
                 type="button"
                 onClick={() => setFormat('bundle')}
-                className={`p-2.5 rounded-lg border text-left transition-all ${
+                className={`min-h-[44px] p-2.5 rounded-lg border text-left transition-all ${
                   format === 'bundle'
                     ? 'border-primary bg-primary/5 text-primary font-semibold ring-1 ring-primary'
                     : 'border-outline-variant bg-surface hover:bg-surface-container-low text-on-surface'
@@ -134,25 +165,25 @@ export const AuditDossierExportModal: React.FC<AuditDossierExportModalProps> = (
           </div>
 
           {/* Checkbox Options */}
-          <div className="p-3 bg-surface-container-low rounded-lg border border-outline-variant space-y-2">
-            <label className="flex items-center gap-2 cursor-pointer">
+          <div className="p-3 bg-surface-container-low rounded-lg border border-outline-variant space-y-2.5">
+            <label className="flex items-center gap-2 cursor-pointer min-h-[32px]">
               <input
                 type="checkbox"
                 checked={includeRawLogs}
                 onChange={(e) => setIncludeRawLogs(e.target.checked)}
                 className="w-4 h-4 text-primary rounded border-outline-variant focus:ring-primary"
               />
-              <span className="font-medium text-on-surface">Include raw lab logbook transcript references</span>
+              <span className="font-medium text-on-surface text-[11px] sm:text-xs">Include raw lab logbook transcript references</span>
             </label>
 
-            <label className="flex items-center gap-2 cursor-pointer">
+            <label className="flex items-center gap-2 cursor-pointer min-h-[32px]">
               <input
                 type="checkbox"
                 checked={includeDigitalSignature}
                 onChange={(e) => setIncludeDigitalSignature(e.target.checked)}
                 className="w-4 h-4 text-primary rounded border-outline-variant focus:ring-primary"
               />
-              <span className="font-medium text-on-surface">
+              <span className="font-medium text-on-surface text-[11px] sm:text-xs">
                 Apply BMC Environmental Cell Cryptographic Signature (SHA-256)
               </span>
             </label>
@@ -165,16 +196,16 @@ export const AuditDossierExportModal: React.FC<AuditDossierExportModalProps> = (
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-surface-container-low border-t border-outline-variant flex items-center justify-between">
-          <div className="text-[10px] text-outline font-mono">
+        <div className="p-3.5 sm:p-4 bg-surface-container-low border-t border-outline-variant flex flex-col sm:flex-row items-center justify-between gap-2.5 shrink-0">
+          <div className="text-[10px] text-outline font-mono self-start sm:self-auto">
             Lineage: MPPCB-ARCHIVAL-2024
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
             <button
               type="button"
               onClick={onClose}
               disabled={isExporting}
-              className="px-3 py-1.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors text-xs font-medium"
+              className="min-h-[40px] px-3.5 py-1.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors text-xs font-medium"
             >
               Cancel
             </button>
@@ -182,7 +213,7 @@ export const AuditDossierExportModal: React.FC<AuditDossierExportModalProps> = (
               type="button"
               onClick={handleTriggerExport}
               disabled={isExporting}
-              className="px-4 py-1.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-all text-xs font-semibold flex items-center gap-1.5 shadow-sm"
+              className="min-h-[40px] px-4 py-1.5 rounded-lg bg-primary text-on-primary hover:bg-tertiary transition-all text-xs font-semibold flex items-center gap-1.5 shadow-sm"
             >
               {isExporting ? (
                 <>

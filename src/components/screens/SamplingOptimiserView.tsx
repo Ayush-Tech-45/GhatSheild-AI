@@ -78,7 +78,7 @@ export const SamplingOptimiserView: React.FC<SamplingOptimiserViewProps> = ({
   };
 
   return (
-    <main className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+    <main className="flex-1 overflow-y-auto p-3 sm:p-5 md:p-6 space-y-4 sm:space-y-6 min-w-0">
       {/* Toast Alert */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-2.5 rounded-lg shadow-xl text-xs flex items-center gap-2 border border-slate-700 animate-fade-in">
@@ -88,9 +88,9 @@ export const SamplingOptimiserView: React.FC<SamplingOptimiserViewProps> = ({
       )}
 
       {/* TOP SECTION: HEADER AREA & ACTIONS */}
-      <section className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-outline-variant">
-        <div className="flex flex-col gap-1 max-w-4xl">
-          <div className="flex items-center gap-3">
+      <section className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 pb-2 border-b border-outline-variant min-w-0">
+        <div className="flex flex-col gap-1 max-w-4xl min-w-0">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <h1 className="text-xl font-bold text-on-surface tracking-tight">
               Sampling Resource Optimiser & Priority Scheduler
             </h1>
@@ -103,17 +103,17 @@ export const SamplingOptimiserView: React.FC<SamplingOptimiserViewProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex flex-wrap items-center gap-2 shrink-0 self-start md:self-auto">
           <button
             onClick={() => onOpenExportModal('all')}
-            className="h-9 px-3 rounded-lg bg-surface-container-lowest border border-outline-variant text-on-surface text-xs font-semibold hover:bg-surface-container-low transition-colors flex items-center gap-2 shadow-xs"
+            className="min-h-[40px] px-3 rounded-lg bg-surface-container-lowest border border-outline-variant text-on-surface text-xs font-semibold hover:bg-surface-container-low transition-colors flex items-center gap-2 shadow-xs"
           >
             <span className="material-symbols-outlined text-outline text-base">table_view</span>
             <span>Export Sampling Schedule (CSV)</span>
           </button>
           <button
             onClick={() => showToast('Field Mission Dossier (PDF) compiled and ready for dispatch.')}
-            className="h-9 px-3.5 rounded-lg bg-primary text-on-primary text-xs font-semibold hover:bg-tertiary transition-colors flex items-center gap-2 shadow-xs"
+            className="min-h-[40px] px-3.5 rounded-lg bg-primary text-on-primary text-xs font-semibold hover:bg-tertiary transition-colors flex items-center gap-2 shadow-xs"
           >
             <span className="material-symbols-outlined text-base">picture_as_pdf</span>
             <span>Generate Field Mission Dossier (PDF)</span>

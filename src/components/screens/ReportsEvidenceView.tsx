@@ -51,10 +51,10 @@ export const ReportsEvidenceView: React.FC<ReportsEvidenceViewProps> = ({ onOpen
       )}
 
       {/* WORKSPACE HEADER & CONTROL BAR */}
-      <section className="p-6 pb-4 border-b border-outline-variant bg-surface-container-lowest">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <section className="p-3 sm:p-5 md:p-6 pb-4 border-b border-outline-variant bg-surface-container-lowest min-w-0">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 sm:gap-4">
           <div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
               <h1 className="text-xl font-bold text-on-background tracking-tight">
                 Regulatory Audit Reports & Evidence Dossier Workspace
               </h1>
@@ -68,27 +68,27 @@ export const ReportsEvidenceView: React.FC<ReportsEvidenceViewProps> = ({ onOpen
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 shrink-0 self-start lg:self-auto">
             <button
               onClick={() => onOpenExportModal('all')}
-              className="inline-flex items-center gap-2 px-3 py-2 bg-primary text-on-primary hover:bg-tertiary rounded-lg text-xs font-semibold shadow-xs transition-colors"
+              className="min-h-[40px] inline-flex items-center gap-2 px-3.5 py-2 bg-primary text-on-primary hover:bg-tertiary rounded-lg text-xs font-semibold shadow-xs transition-colors"
             >
               <span className="material-symbols-outlined text-sm">post_add</span>
               <span>Generate New Audit Dossier</span>
             </button>
             <button
               onClick={() => showToast('Monthly automatic reporting scheduled on 1st of every month.')}
-              className="inline-flex items-center gap-2 px-3 py-2 bg-surface-container-lowest text-on-surface hover:bg-surface-container-low rounded-lg text-xs font-semibold border border-outline-variant transition-colors"
+              className="min-h-[40px] inline-flex items-center gap-2 px-3 py-2 bg-surface-container-lowest text-on-surface hover:bg-surface-container-low rounded-lg text-xs font-semibold border border-outline-variant transition-colors"
             >
               <span className="material-symbols-outlined text-sm">schedule</span>
-              <span>Schedule Automated Summary (Monthly)</span>
+              <span>Schedule Summary</span>
             </button>
             <button
               onClick={() => showToast('Current dossier view exported as ZIP archive.')}
-              className="inline-flex items-center gap-2 px-3 py-2 bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg text-xs font-medium border border-outline-variant transition-colors"
+              className="min-h-[40px] inline-flex items-center gap-2 px-3 py-2 bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-lg text-xs font-medium border border-outline-variant transition-colors"
             >
               <span className="material-symbols-outlined text-sm">folder_zip</span>
-              <span>Export Current View (ZIP/CSV)</span>
+              <span>Export View (ZIP)</span>
             </button>
           </div>
         </div>
@@ -175,11 +175,11 @@ export const ReportsEvidenceView: React.FC<ReportsEvidenceViewProps> = ({ onOpen
       </section>
 
       {/* SPLIT SCREEN WORKSPACE (~60% Repository / ~40% Inspector) */}
-      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden p-6 gap-6">
+      <div className="flex-1 flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden p-3 sm:p-5 md:p-6 gap-4 sm:gap-6 min-w-0">
         {/* LEFT PANEL: Official Dossier Repository (60%) */}
-        <div className="w-full lg:w-[58%] xl:w-[60%] flex flex-col bg-surface-container-lowest border border-outline-variant rounded-xl shadow-xs overflow-hidden">
-          <div className="border-b border-outline-variant px-4 pt-3 bg-surface-container-lowest">
-            <div className="flex items-center justify-between pb-3">
+        <div className="w-full lg:w-[58%] xl:w-[60%] flex flex-col bg-surface-container-lowest border border-outline-variant rounded-xl shadow-xs overflow-hidden min-w-0">
+          <div className="border-b border-outline-variant px-3 sm:px-4 pt-3 bg-surface-container-lowest">
+            <div className="flex items-center justify-between pb-3 flex-wrap gap-2">
               <div>
                 <h2 className="text-xs font-bold text-on-background">
                   Official Dossier Repository & Report Generator
@@ -191,10 +191,10 @@ export const ReportsEvidenceView: React.FC<ReportsEvidenceViewProps> = ({ onOpen
               </span>
             </div>
 
-            <div className="flex gap-6 text-xs font-medium">
+            <div className="flex gap-4 sm:gap-6 text-xs font-medium overflow-x-auto min-w-0 flex-nowrap pb-1 scrollbar-thin">
               <button
                 onClick={() => setActiveTab('dossiers')}
-                className={`pb-2 transition-colors ${
+                className={`pb-2 transition-colors whitespace-nowrap shrink-0 min-h-[36px] ${
                   activeTab === 'dossiers' ? 'text-primary font-bold border-b-2 border-primary' : 'text-on-surface-variant hover:text-on-surface'
                 }`}
               >
@@ -202,7 +202,7 @@ export const ReportsEvidenceView: React.FC<ReportsEvidenceViewProps> = ({ onOpen
               </button>
               <button
                 onClick={() => setActiveTab('builder')}
-                className={`pb-2 transition-colors ${
+                className={`pb-2 transition-colors whitespace-nowrap shrink-0 min-h-[36px] ${
                   activeTab === 'builder' ? 'text-primary font-bold border-b-2 border-primary' : 'text-on-surface-variant hover:text-on-surface'
                 }`}
               >
@@ -210,7 +210,7 @@ export const ReportsEvidenceView: React.FC<ReportsEvidenceViewProps> = ({ onOpen
               </button>
               <button
                 onClick={() => setActiveTab('templates')}
-                className={`pb-2 transition-colors ${
+                className={`pb-2 transition-colors whitespace-nowrap shrink-0 min-h-[36px] ${
                   activeTab === 'templates' ? 'text-primary font-bold border-b-2 border-primary' : 'text-on-surface-variant hover:text-on-surface'
                 }`}
               >
@@ -218,7 +218,7 @@ export const ReportsEvidenceView: React.FC<ReportsEvidenceViewProps> = ({ onOpen
               </button>
               <button
                 onClick={() => setActiveTab('registers')}
-                className={`pb-2 transition-colors ${
+                className={`pb-2 transition-colors whitespace-nowrap shrink-0 min-h-[36px] ${
                   activeTab === 'registers' ? 'text-primary font-bold border-b-2 border-primary' : 'text-on-surface-variant hover:text-on-surface'
                 }`}
               >
