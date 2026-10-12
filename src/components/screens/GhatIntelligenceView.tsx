@@ -24,6 +24,7 @@ export const GhatIntelligenceView: React.FC<GhatIntelligenceViewProps> = ({
   const [basinFilter, setBasinFilter] = useState('All');
   const [priorityFilter, setPriorityFilter] = useState('All');
   const [compareMode, setCompareMode] = useState(false);
+  const [matrixView, setMatrixView] = useState<'table' | 'cards'>('cards');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [officerNotes, setOfficerNotes] = useState<string[]>([]);
   const [isAddingNote, setIsAddingNote] = useState(false);
@@ -244,143 +245,261 @@ export const GhatIntelligenceView: React.FC<GhatIntelligenceViewProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start min-w-0">
         {/* LEFT COLUMN: MATRIX & PARAMETRIC DRILLDOWN */}
         <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-4 min-w-0">
-          {/* 1. INTERACTIVE GHAT MATRIX TABLE */}
+          {/* 1. INTERACTIVE GHAT MATRIX TABLE / CARDS */}
           <div className="bg-surface-container-lowest border border-outline-variant rounded-lg shadow-xs overflow-hidden flex flex-col min-w-0">
-            <div className="px-4 py-2.5 bg-surface-container-low border-b border-outline-variant flex items-center justify-between flex-wrap gap-1">
+            <div className="px-3 sm:px-4 py-2.5 bg-surface-container-low border-b border-outline-variant flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-base">table_chart</span>
                 <h2 className="text-xs font-bold text-on-surface uppercase tracking-wider">
                   Bhopal Municipal Ghat Surveillance Matrix
                 </h2>
               </div>
-              <span className="text-[11px] text-outline">Click row to inspect</span>
+              <div className="flex items-center gap-2">
+                {/* View Switcher Toggle */}
+                <div className="flex items-center gap-1 bg-surface-container rounded-lg p-0.5 border border-outline-variant/60">
+                  <button
+                    type="button"
+                    onClick={() => setMatrixView('cards')}
+                    aria-label="Cards view"
+                    className={`min-h-[32px] px-2.5 py-1 rounded-md text-[11px] font-semibold flex items-center gap-1 transition-colors ${
+                      matrixView === 'cards'
+                        ? 'bg-primary text-white shadow-xs'
+                        : 'text-on-surface-variant hover:text-on-surface'
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-xs">grid_view</span>
+                    <span className="hidden xs:inline">Cards</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMatrixView('table')}
+                    aria-label="Table view"
+                    className={`min-h-[32px] px-2.5 py-1 rounded-md text-[11px] font-semibold flex items-center gap-1 transition-colors ${
+                      matrixView === 'table'
+                        ? 'bg-primary text-white shadow-xs'
+                        : 'text-on-surface-variant hover:text-on-surface'
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-xs">table_chart</span>
+                    <span className="hidden xs:inline">Table</span>
+                  </button>
+                </div>
+                <a
+                  href="#evidence-dossier"
+                  className="lg:hidden inline-flex items-center gap-1 px-2 py-1 rounded text-[11px] font-medium text-primary hover:bg-primary/5 transition-colors border border-primary/20"
+                >
+                  <span className="material-symbols-outlined text-xs">verified</span>
+                  <span>Dossier</span>
+                </a>
+              </div>
             </div>
 
-            <div className="w-full overflow-x-auto min-w-0">
-              <table className="w-full text-left border-collapse min-w-[680px]">
-                <thead>
-                  <tr className="bg-surface-container/60 border-b border-outline-variant text-[11px] uppercase text-on-surface-variant font-semibold tracking-wider">
-                    <th className="py-2.5 px-3">Ghat Name & ID</th>
-                    <th className="py-2.5 px-2">Water Body</th>
-                    <th className="py-2.5 px-2 text-right">Records</th>
-                    <th className="py-2.5 px-3">Available Parameters</th>
-                    <th className="py-2.5 px-2 text-center">Confidence</th>
-                    <th className="py-2.5 px-2">Risk Priority</th>
-                    <th className="py-2.5 px-2">Last Sample</th>
-                    <th className="py-2.5 px-3 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-outline-variant/40 text-xs">
-                  {filteredStations.map((ghat) => {
-                    const isSelected = ghat.id === selectedGhatId;
-                    const isHigh = ghat.riskPriority === 'High Priority';
-                    const isMod = ghat.riskPriority === 'Moderate Priority';
+            {/* CARDS VIEW (Mobile & Responsive Friendly) */}
+            {matrixView === 'cards' ? (
+              <div className="p-3 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {filteredStations.map((ghat) => {
+                  const isSelected = ghat.id === selectedGhatId;
+                  const isHigh = ghat.riskPriority === 'High Priority';
+                  const isMod = ghat.riskPriority === 'Moderate Priority';
 
-                    return (
-                      <tr
-                        key={ghat.id}
-                        onClick={() => setSelectedGhatId(ghat.id)}
-                        className={`transition-colors cursor-pointer ${
-                          isSelected
-                            ? 'bg-surface-container/80 ring-2 ring-primary relative z-10'
-                            : 'hover:bg-surface-container-low'
-                        }`}
-                      >
-                        <td className="py-2.5 px-3 font-semibold text-primary">
-                          <div className="flex items-center gap-2">
-                            <span className="material-symbols-outlined text-primary text-base">
-                              {isSelected ? 'radio_button_checked' : 'radio_button_unchecked'}
-                            </span>
-                            <div>
-                              <div className="font-bold text-on-surface">{ghat.name}</div>
-                              <span className="text-[11px] font-mono text-outline">{ghat.id}</span>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="py-2.5 px-2 text-on-surface-variant">{ghat.waterBody}</td>
-                        <td className="py-2.5 px-2 text-right font-mono font-semibold tabular-nums">
-                          {ghat.recordsCount}
-                        </td>
-                        <td className="py-2.5 px-3">
-                          <div className="flex flex-wrap gap-1">
-                            {ghat.availableParameters.map((p) => (
-                              <span
-                                key={p}
-                                className={`px-1.5 py-0.2 rounded text-[10px] font-semibold ${
-                                  p === 'BOD' && isHigh
-                                    ? 'bg-error-container text-on-error-container font-bold'
-                                    : 'bg-surface-container-highest text-on-surface'
-                                }`}
-                              >
-                                {p}
-                              </span>
-                            ))}
-                          </div>
-                        </td>
-                        <td className="py-2.5 px-2 text-center">
+                  return (
+                    <div
+                      key={ghat.id}
+                      onClick={() => setSelectedGhatId(ghat.id)}
+                      className={`p-3 rounded-lg border transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
+                        isSelected
+                          ? 'bg-primary/5 border-primary ring-2 ring-primary/40 shadow-xs'
+                          : 'bg-surface-container-low/40 hover:bg-surface-container-low border-outline-variant/80'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <div className="font-bold text-xs text-on-surface truncate">{ghat.name}</div>
+                          <div className="text-[10px] text-outline font-mono truncate">{ghat.id} · {ghat.waterBody}</div>
+                        </div>
+                        <span
+                          className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase shrink-0 ${
+                            isHigh
+                              ? 'border border-error text-error bg-error-container/30'
+                              : isMod
+                              ? 'border border-amber-300 text-amber-800 bg-amber-50'
+                              : 'border border-outline-variant text-secondary bg-surface-container'
+                          }`}
+                        >
                           <span
-                            className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold ${
-                              ghat.confidenceLevel === 'Critical'
+                            className={`w-1.5 h-1.5 rounded-full ${
+                              isHigh ? 'bg-error' : isMod ? 'bg-amber-500' : 'bg-secondary'
+                            }`}
+                          />
+                          {ghat.riskPriority}
+                        </span>
+                      </div>
+
+                      <div className="flex flex-wrap gap-1">
+                        {ghat.availableParameters.map((p) => (
+                          <span
+                            key={p}
+                            className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${
+                              p === 'BOD' && isHigh
                                 ? 'bg-error-container text-on-error-container font-bold'
-                                : 'bg-surface-container-high text-on-surface'
+                                : 'bg-surface-container-highest text-on-surface'
                             }`}
                           >
-                            {ghat.confidence}
+                            {p}
                           </span>
-                        </td>
-                        <td className="py-2.5 px-2">
-                          <span
-                            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                              isHigh
-                                ? 'border border-error text-error bg-error-container/30'
-                                : isMod
-                                ? 'border border-amber-300 text-amber-800 bg-amber-50'
-                                : 'border border-outline-variant text-secondary bg-surface-container'
-                            }`}
-                          >
+                        ))}
+                      </div>
+
+                      <div className="flex items-center justify-between text-[11px] text-on-surface-variant pt-2 border-t border-outline-variant/50">
+                        <span className="font-mono tabular-nums">{ghat.recordsCount} obs</span>
+                        <span className="text-[10px] text-outline font-mono">Last: {ghat.latestObsDate}</span>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedGhatId(ghat.id);
+                          }}
+                          className={`min-h-[32px] px-2.5 py-1 rounded text-[11px] font-semibold transition-colors ${
+                            isSelected
+                              ? 'bg-primary text-white shadow-xs'
+                              : 'bg-surface-container border border-outline-variant hover:bg-surface-container-high text-on-surface'
+                          }`}
+                        >
+                          {isSelected ? 'Inspecting' : 'Inspect'}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              /* TABLE VIEW (Desktop / Tablet Scrollable Matrix) */
+              <div className="w-full overflow-x-auto min-w-0">
+                <table className="w-full text-left border-collapse min-w-[680px]">
+                  <thead>
+                    <tr className="bg-surface-container/60 border-b border-outline-variant text-[11px] uppercase text-on-surface-variant font-semibold tracking-wider">
+                      <th className="py-2.5 px-3">Ghat Name & ID</th>
+                      <th className="py-2.5 px-2">Water Body</th>
+                      <th className="py-2.5 px-2 text-right">Records</th>
+                      <th className="py-2.5 px-3">Available Parameters</th>
+                      <th className="py-2.5 px-2 text-center">Confidence</th>
+                      <th className="py-2.5 px-2">Risk Priority</th>
+                      <th className="py-2.5 px-2">Last Sample</th>
+                      <th className="py-2.5 px-3 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-outline-variant/40 text-xs">
+                    {filteredStations.map((ghat) => {
+                      const isSelected = ghat.id === selectedGhatId;
+                      const isHigh = ghat.riskPriority === 'High Priority';
+                      const isMod = ghat.riskPriority === 'Moderate Priority';
+
+                      return (
+                        <tr
+                          key={ghat.id}
+                          onClick={() => setSelectedGhatId(ghat.id)}
+                          className={`transition-colors cursor-pointer ${
+                            isSelected
+                              ? 'bg-surface-container/80 ring-2 ring-primary relative z-10'
+                              : 'hover:bg-surface-container-low'
+                          }`}
+                        >
+                          <td className="py-2.5 px-3 font-semibold text-primary">
+                            <div className="flex items-center gap-2">
+                              <span className="material-symbols-outlined text-primary text-base">
+                                {isSelected ? 'radio_button_checked' : 'radio_button_unchecked'}
+                              </span>
+                              <div>
+                                <div className="font-bold text-on-surface">{ghat.name}</div>
+                                <span className="text-[11px] font-mono text-outline">{ghat.id}</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="py-2.5 px-2 text-on-surface-variant">{ghat.waterBody}</td>
+                          <td className="py-2.5 px-2 text-right font-mono font-semibold tabular-nums">
+                            {ghat.recordsCount}
+                          </td>
+                          <td className="py-2.5 px-3">
+                            <div className="flex flex-wrap gap-1">
+                              {ghat.availableParameters.map((p) => (
+                                <span
+                                  key={p}
+                                  className={`px-1.5 py-0.2 rounded text-[10px] font-semibold ${
+                                    p === 'BOD' && isHigh
+                                      ? 'bg-error-container text-on-error-container font-bold'
+                                      : 'bg-surface-container-highest text-on-surface'
+                                  }`}
+                                >
+                                  {p}
+                                </span>
+                              ))}
+                            </div>
+                          </td>
+                          <td className="py-2.5 px-2 text-center">
                             <span
-                              className={`w-1.5 h-1.5 rounded-full ${
-                                isHigh ? 'bg-error' : isMod ? 'bg-amber-500' : 'bg-secondary'
+                              className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold ${
+                                ghat.confidenceLevel === 'Critical'
+                                  ? 'bg-error-container text-on-error-container font-bold'
+                                  : 'bg-surface-container-high text-on-surface'
                               }`}
-                            ></span>
-                            {ghat.riskPriority}
-                          </span>
-                        </td>
-                        <td className="py-2.5 px-2 font-mono text-[11px] text-on-surface-variant tabular-nums">
-                          {ghat.latestObsDate}
-                        </td>
-                        <td className="py-2.5 px-3 text-right">
-                          {isSelected ? (
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                showToast(`Inspection active for ${ghat.name}`);
-                              }}
-                              className="px-2.5 py-1 rounded bg-primary text-on-primary text-[11px] font-semibold shadow-xs flex items-center gap-1 ml-auto"
                             >
-                              <span className="material-symbols-outlined text-xs">folder_open</span>
-                              <span>Inspecting</span>
-                            </button>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedGhatId(ghat.id);
-                              }}
-                              className="px-2 py-1 rounded border border-outline-variant hover:border-outline text-on-surface-variant hover:text-on-surface text-[11px]"
+                              {ghat.confidence}
+                            </span>
+                          </td>
+                          <td className="py-2.5 px-2">
+                            <span
+                              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                                isHigh
+                                  ? 'border border-error text-error bg-error-container/30'
+                                  : isMod
+                                  ? 'border border-amber-300 text-amber-800 bg-amber-50'
+                                  : 'border border-outline-variant text-secondary bg-surface-container'
+                              }`}
                             >
-                              Inspect
-                            </button>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                              <span
+                                className={`w-1.5 h-1.5 rounded-full ${
+                                  isHigh ? 'bg-error' : isMod ? 'bg-amber-500' : 'bg-secondary'
+                                }`}
+                              ></span>
+                              {ghat.riskPriority}
+                            </span>
+                          </td>
+                          <td className="py-2.5 px-2 font-mono text-[11px] text-on-surface-variant tabular-nums">
+                            {ghat.latestObsDate}
+                          </td>
+                          <td className="py-2.5 px-3 text-right">
+                            {isSelected ? (
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  showToast(`Inspection active for ${ghat.name}`);
+                                }}
+                                className="min-h-[32px] px-2.5 py-1 rounded bg-primary text-on-primary text-[11px] font-semibold shadow-xs flex items-center gap-1 ml-auto"
+                              >
+                                <span className="material-symbols-outlined text-xs">folder_open</span>
+                                <span>Inspecting</span>
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedGhatId(ghat.id);
+                                }}
+                                className="min-h-[32px] px-2 py-1 rounded border border-outline-variant hover:border-outline text-on-surface-variant hover:text-on-surface text-[11px]"
+                              >
+                                Inspect
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
 
           {/* 2. SELECTED GHAT IN-DEPTH ANALYSIS SECTION */}
@@ -519,7 +638,7 @@ export const GhatIntelligenceView: React.FC<GhatIntelligenceViewProps> = ({
         </div>
 
         {/* RIGHT COLUMN: DEDICATED MUNICIPAL EVIDENCE DRAWER */}
-        <div className="lg:col-span-5 xl:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-lg shadow-xs flex flex-col min-w-0">
+        <div id="evidence-dossier" className="lg:col-span-5 xl:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-lg shadow-xs flex flex-col min-w-0 scroll-mt-4">
           {/* DRAWER HEADER */}
           <div className="p-3 sm:p-3.5 bg-surface-container-low border-b border-outline-variant flex items-center justify-between">
             <div className="flex items-center gap-2 min-w-0">

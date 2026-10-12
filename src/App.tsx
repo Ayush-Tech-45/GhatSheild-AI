@@ -30,6 +30,7 @@ function MainAppShell() {
   const [targetGhatId, setTargetGhatId] = useState<string>('BPL-WTR-GH-04');
   const [globalSearch, setGlobalSearch] = useState<string>('');
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false);
 
   // Modals state
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
@@ -72,6 +73,8 @@ function MainAppShell() {
           onOpenAuthModal={() => handleOpenAuth('signin')}
           isOpenMobile={isMobileSidebarOpen}
           onCloseMobile={() => setIsMobileSidebarOpen(false)}
+          isDesktopCollapsed={isDesktopCollapsed}
+          onToggleDesktopCollapse={() => setIsDesktopCollapsed((prev) => !prev)}
         />
 
         {/* MAIN APP CANVAS (FLUID FLEX-1 MIN-W-0 CONTAINER) */}
