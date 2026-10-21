@@ -1,158 +1,120 @@
 # GhatSheild AI 💧
-### Water Quality Intelligence & Decision Support for Bhopal
 
-GhatSheild AI is an AI-powered water-quality intelligence and decision-support prototype designed for municipal teams working with water-quality observations from Bhopal's ghats. It brings monitoring insights, historical trends, data-quality checks, sampling prioritisation, and evidence-oriented reporting into one dashboard.
+### Water-Quality Intelligence & Decision Support for Bhopal
 
-> **Project status:** Prototype / under active development. Outputs should support human review and must not be treated as official regulatory determinations or a substitute for laboratory testing.
+GhatSheild AI is a prototype dashboard for exploring water-quality observations from Bhopal's ghats. It brings monitoring insights, historical trends, data-quality review, sampling prioritisation, and evidence-oriented reporting into one interface.
 
-## 🎯 Problem
+> **Status:** Prototype / under active development. This software is not an official regulatory system, does not replace laboratory testing, and must not be used as the sole basis for public-health or compliance decisions.
 
-Water-quality teams need to review observations from multiple locations, understand changes over time, identify incomplete or questionable records, and decide where follow-up sampling may be most useful. Scattered records can make this analysis slower and harder to explain.
+## Why this project?
 
-## 💡 Proposed Solution
+Water-quality teams may need to review observations from multiple locations, identify incomplete or questionable records, compare trends, and plan follow-up sampling. A unified interface can make those records easier to inspect and discuss.
 
-GhatSheild AI provides a unified console to explore ghat-level intelligence and turn water-quality records into understandable, traceable decision support for municipal users.
+## Capabilities
 
-## ✨ Key Capabilities
+The interface is organised around the following workflows; availability and depth depend on the current implementation and configured data:
 
-- **Overview dashboard** — a central view of water-quality intelligence and priority signals.
-- **Ghat intelligence** — inspect an individual ghat and explore its information.
-- **Water-quality trends** — review historical patterns and compare observations over time.
-- **Data-quality review** — surface records that may need validation or further investigation.
-- **Sampling optimiser** — help prioritise locations for follow-up sampling.
-- **AI copilot** — an interface for AI-assisted exploration of water-quality information.
-- **Reports & evidence** — prepare evidence-oriented exports and audit dossiers.
-- **System diagnostics and helpdesk** — supporting utilities for the prototype.
+- **Overview dashboard** — review high-level indicators and priority signals.
+- **Ghat intelligence** — inspect location-specific information.
+- **Water-quality trends** — compare observations over time.
+- **Data-quality review** — surface records that may need validation.
+- **Sampling prioritisation** — support review of locations for follow-up sampling.
+- **AI copilot** — explore water-quality information with AI-assisted interaction.
+- **Reports and evidence** — prepare traceable summaries and exports.
+- **Diagnostics and helpdesk** — prototype support utilities.
 
-Actual outputs depend on the available data, configuration, and implementation. Validate all criteria and results with the relevant authoritative source before operational use.
+## Technology
 
-## 🧰 Technology Stack
+- React 19 and TypeScript
+- Vite
+- Tailwind CSS
+- Lucide React
+- Motion
+- Google Gemini integration through `@google/genai`
+- Express and dotenv (available dependencies; usage depends on the configured workflow)
 
-- **Frontend:** React 19, TypeScript
-- **Build tool / development server:** Vite
-- **Styling:** Tailwind CSS
-- **Icons:** Lucide React
-- **Motion:** Motion
-- **AI integration:** Google Gemini API via `@google/genai`
-- **Supporting packages:** Express, dotenv
-
-## 📁 Project Structure
+## Repository layout
 
 ```text
-GhatSheild-AI/
-├── src/
-│   ├── components/
-│   │   ├── common/
-│   │   ├── modals/
-│   │   └── screens/
-│   └── App.tsx
-├── .env.example
-├── index.html
-├── metadata.json
-├── package.json
-├── tsconfig.json
-└── vite.config.ts
+src/
+├── components/
+│   ├── common/
+│   ├── modals/
+│   └── screens/
+└── App.tsx
+.env.example
+index.html
+package.json
+tsconfig.json
+vite.config.ts
 ```
 
-## 🚀 Getting Started
+## Run locally
 
 ### Prerequisites
 
-- Node.js (use a current LTS release compatible with the project dependencies)
-- npm
-- A Google Gemini API key if you use AI-powered functionality
+- Node.js and npm compatible with the versions required by the dependencies
+- A Gemini API key only if you intend to use Gemini-backed functionality
 
-### 1. Clone the repository
+### Setup
 
 ```bash
 git clone https://github.com/Ayush-Tech-45/GhatSheild-AI.git
 cd GhatSheild-AI
-```
-
-### 2. Install dependencies
-
-```bash
 npm install
 ```
 
-### 3. Configure environment variables
-
-Copy the example environment file:
-
-**macOS / Linux**
-```bash
-cp .env.example .env
-```
+Create a local `.env` file based on `.env.example` and configure values required by your workflow. Keep real credentials out of commits.
 
 **Windows PowerShell**
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Set the required values in your local environment. The example file documents `GEMINI_API_KEY` and `APP_URL`. Never commit real API keys or other secrets to GitHub. If using Google AI Studio, follow the project's configured secrets workflow.
+**macOS / Linux**
+```bash
+cp .env.example .env
+```
 
-### 4. Start the development server
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-Vite is configured to serve on port **3000**. Open the local URL printed in the terminal (typically http://localhost:3000).
+Vite is configured to use port 3000. The terminal will show the local URL.
 
-### 5. Build for production
+Build and type-check:
 
 ```bash
 npm run build
-```
-
-To preview a production build locally:
-
-```bash
-npm run preview
-```
-
-TypeScript validation is available through:
-
-```bash
 npm run lint
 ```
 
-## 🔐 Security & Data Notes
+Run these checks in your local environment before relying on the build status; they have not been executed as part of this documentation update.
 
-- Keep API keys and secrets in local environment configuration or the deployment platform's secret manager.
-- Do not commit `.env` files containing real secrets, credentials, or private data.
-- Check data licensing, provenance, quality, and permitted use before adding datasets.
-- Treat AI-generated summaries and priority assessments as decision support that requires human verification.
-- Confirm the applicable CPCB criteria and official guidance for the intended water use before claiming compliance.
+## Configuration and security
 
-## 👥 Team
+- Store API keys in local environment variables or your deployment provider's secret manager.
+- Never commit real `.env` files, tokens, credentials, or personal data.
+- Keep `.env.example` limited to placeholder values.
+- Check dataset provenance, licensing, data quality, and permitted use before importing records.
+- Validate AI summaries and prioritisation recommendations with trusted sources and human review.
+- Do not claim regulatory compliance unless the applicable criteria, data, calculations, and validation process have been independently established.
 
-Built collaboratively by the GhatSheild AI project team.
+## Contributing
 
-| Name | Role |
-|---|---|
-| Ayush Rathore | Project Lead |
-| Team member | Add name and contribution |
-| Team member | Add name and contribution |
+1. Create a branch for a focused change.
+2. Make the change and test it locally.
+3. Use a descriptive commit message.
+4. Open a pull request with context, screenshots for UI changes, and test results.
 
-Update this table with the confirmed names and responsibilities of all contributors.
+Suggested branch prefixes: `feat/`, `fix/`, `docs/`, and `test/`.
 
-## 🤝 Contributing
+## Current status and limitations
 
-We welcome contributions from the project team.
+This repository contains a dashboard prototype. Data integrations, analytical rules, AI workflows, authentication, and deployment behaviour should be reviewed against the source before operational use. Feature descriptions above are not a guarantee that every workflow is production-ready.
 
-1. Clone the repository and create a branch for your task.
-2. Make focused changes and test them locally.
-3. Commit with a descriptive message.
-4. Push your branch and open a Pull Request to `main`.
-5. Ask a teammate to review the changes before merging.
+## License
 
-Suggested branch names: `feat/ghat-dashboard`, `fix/data-validation`, or `docs/readme-update`.
-
-## 📌 Current Status
-
-This repository contains the GhatSheild AI dashboard prototype. Data integrations, AI workflows, validation logic, and deployment details may evolve as development continues.
-
-## 📄 License
-
-No license has been specified yet. Unless a license is added, reuse and redistribution permissions are not automatically granted.
+The source contains an Apache-2.0 SPDX header. Add or verify the repository's top-level license file before relying on the project-wide licensing terms.
